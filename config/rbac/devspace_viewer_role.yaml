@@ -1,0 +1,23 @@
+# permissions for end users to view devspaces.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: devspace-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: devspace-viewer-role
+rules:
+- apiGroups:
+  - platform.devspace.io
+  resources:
+  - devspaces
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - platform.devspace.io
+  resources:
+  - devspaces/status
+  verbs:
+  - get

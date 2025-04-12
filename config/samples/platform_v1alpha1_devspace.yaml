@@ -1,0 +1,9 @@
+apiVersion: platform.devspace.io/v1alpha1
+kind: DevSpace
+metadata:
+  labels:
+    app.kubernetes.io/name: devspace-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: devspace-sample
+spec:
+  # TODO(user): Add fields here
