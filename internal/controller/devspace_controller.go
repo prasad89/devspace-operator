@@ -350,8 +350,8 @@ func generateDesiredIngress(devspace *v1alpha1.DevSpace) *networkingv1.Ingress {
 }
 
 func addCondition(status *v1alpha1.DevSpaceStatus, condType string, statusType metav1.ConditionStatus, reason, message string) {
-	for i, exsitingCondition := range status.Conditions {
-		if exsitingCondition.Type == condType {
+	for i, existingCondition := range status.Conditions {
+		if existingCondition.Type == condType {
 			status.Conditions[i].Status = statusType
 			status.Conditions[i].Reason = reason
 			status.Conditions[i].Message = message
@@ -441,7 +441,7 @@ func (r *DevSpaceReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		addCondition(&devspace.Status, "NotReady", metav1.ConditionFalse, "SomeResourcesNotReady", "Some resources are not ready")
 	}
 
-	log.Info("Reconcilation Complete...")
+	log.Info("Reconciliation Complete...")
 
 	return ctrl.Result{}, nil
 }
