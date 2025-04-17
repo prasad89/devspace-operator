@@ -28,14 +28,14 @@ type DevSpaceSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of DevSpace. Edit devspace_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	Name     string `json:"name"`
+	Owner    string `json:"owner"`
+	Hostname string `json:"hostname"`
 }
 
 // DevSpaceStatus defines the observed state of DevSpace
 type DevSpaceStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	Conditions []metav1.Condition `json:"conditions,omitempty"`
 }
 
 // +kubebuilder:object:root=true
