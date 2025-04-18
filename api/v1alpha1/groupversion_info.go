@@ -1,3 +1,5 @@
+// +k8s:deepcopy-gen=package
+
 /*
 Copyright 2025.
 

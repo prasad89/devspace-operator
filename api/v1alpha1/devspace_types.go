@@ -1,3 +1,6 @@
+// +k8s:deepcopy-gen=package
+// +groupName=platform.devspace.io
+
 /*
 Copyright 2025.
 
@@ -38,6 +41,9 @@ type DevSpaceStatus struct {
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
 }
 
+// +genclient
+// +genclient:nonNamespaced
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 
@@ -50,6 +56,7 @@ type DevSpace struct {
 	Status DevSpaceStatus `json:"status,omitempty"`
 }
 
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:object:root=true
 
 // DevSpaceList contains a list of DevSpace
