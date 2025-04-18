@@ -3,8 +3,8 @@
 package versioned
 
 import (
-	fmt "fmt"
-	http "net/http"
+	"fmt"
+	"net/http"
 
 	apiv1alpha1 "github.com/prasad89/devspace-operator/pkg/generated/clientset/versioned/typed/api/v1alpha1"
 	discovery "k8s.io/client-go/discovery"

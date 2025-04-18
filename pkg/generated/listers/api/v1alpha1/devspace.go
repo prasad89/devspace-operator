@@ -3,10 +3,10 @@
 package v1alpha1
 
 import (
-	apiv1alpha1 "github.com/prasad89/devspace-operator/api/v1alpha1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	listers "k8s.io/client-go/listers"
-	cache "k8s.io/client-go/tools/cache"
+	v1alpha1 "github.com/prasad89/devspace-operator/api/v1alpha1"
+	"k8s.io/apimachinery/pkg/labels"
+	"k8s.io/client-go/listers"
+	"k8s.io/client-go/tools/cache"
 )
 
 // DevSpaceLister helps list DevSpaces.
@@ -14,19 +14,19 @@ import (
 type DevSpaceLister interface {
 	// List lists all DevSpaces in the indexer.
 	// Objects returned here must be treated as read-only.
-	List(selector labels.Selector) (ret []*apiv1alpha1.DevSpace, err error)
+	List(selector labels.Selector) (ret []*v1alpha1.DevSpace, err error)
 	// Get retrieves the DevSpace from the index for a given name.
 	// Objects returned here must be treated as read-only.
-	Get(name string) (*apiv1alpha1.DevSpace, error)
+	Get(name string) (*v1alpha1.DevSpace, error)
 	DevSpaceListerExpansion
 }
 
 // devSpaceLister implements the DevSpaceLister interface.
 type devSpaceLister struct {
-	listers.ResourceIndexer[*apiv1alpha1.DevSpace]
+	listers.ResourceIndexer[*v1alpha1.DevSpace]
 }
 
 // NewDevSpaceLister returns a new DevSpaceLister.
 func NewDevSpaceLister(indexer cache.Indexer) DevSpaceLister {
-	return &devSpaceLister{listers.New[*apiv1alpha1.DevSpace](indexer, apiv1alpha1.Resource("devspace"))}
+	return &devSpaceLister{listers.New[*v1alpha1.DevSpace](indexer, v1alpha1.Resource("devspace"))}
 }

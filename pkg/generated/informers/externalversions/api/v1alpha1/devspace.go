@@ -3,13 +3,13 @@
 package v1alpha1
 
 import (
-	context "context"
+	"context"
 	time "time"
 
-	devspaceoperatorapiv1alpha1 "github.com/prasad89/devspace-operator/api/v1alpha1"
+	apiv1alpha1 "github.com/prasad89/devspace-operator/api/v1alpha1"
 	versioned "github.com/prasad89/devspace-operator/pkg/generated/clientset/versioned"
 	internalinterfaces "github.com/prasad89/devspace-operator/pkg/generated/informers/externalversions/internalinterfaces"
-	apiv1alpha1 "github.com/prasad89/devspace-operator/pkg/generated/listers/api/v1alpha1"
+	v1alpha1 "github.com/prasad89/devspace-operator/pkg/generated/listers/api/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"
@@ -20,7 +20,7 @@ import (
 // DevSpaces.
 type DevSpaceInformer interface {
 	Informer() cache.SharedIndexInformer
-	Lister() apiv1alpha1.DevSpaceLister
+	Lister() v1alpha1.DevSpaceLister
 }
 
 type devSpaceInformer struct {
@@ -45,28 +45,16 @@ func NewFilteredDevSpaceInformer(client versioned.Interface, resyncPeriod time.D
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.ApiV1alpha1().DevSpaces().List(context.Background(), options)
+				return client.ApiV1alpha1().DevSpaces().List(context.TODO(), options)
 			},
 			WatchFunc: func(options v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.ApiV1alpha1().DevSpaces().Watch(context.Background(), options)
-			},
-			ListWithContextFunc: func(ctx context.Context, options v1.ListOptions) (runtime.Object, error) {
-				if tweakListOptions != nil {
-					tweakListOptions(&options)
-				}
-				return client.ApiV1alpha1().DevSpaces().List(ctx, options)
-			},
-			WatchFuncWithContext: func(ctx context.Context, options v1.ListOptions) (watch.Interface, error) {
-				if tweakListOptions != nil {
-					tweakListOptions(&options)
-				}
-				return client.ApiV1alpha1().DevSpaces().Watch(ctx, options)
+				return client.ApiV1alpha1().DevSpaces().Watch(context.TODO(), options)
 			},
 		},
-		&devspaceoperatorapiv1alpha1.DevSpace{},
+		&apiv1alpha1.DevSpace{},
 		resyncPeriod,
 		indexers,
 	)
@@ -77,9 +65,9 @@ func (f *devSpaceInformer) defaultInformer(client versioned.Interface, resyncPer
 }
 
 func (f *devSpaceInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&devspaceoperatorapiv1alpha1.DevSpace{}, f.defaultInformer)
+	return f.factory.InformerFor(&apiv1alpha1.DevSpace{}, f.defaultInformer)
 }
 
-func (f *devSpaceInformer) Lister() apiv1alpha1.DevSpaceLister {
-	return apiv1alpha1.NewDevSpaceLister(f.Informer().GetIndexer())
+func (f *devSpaceInformer) Lister() v1alpha1.DevSpaceLister {
+	return v1alpha1.NewDevSpaceLister(f.Informer().GetIndexer())
 }

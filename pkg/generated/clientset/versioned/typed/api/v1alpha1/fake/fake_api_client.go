@@ -13,7 +13,7 @@ type FakeApiV1alpha1 struct {
 }
 
 func (c *FakeApiV1alpha1) DevSpaces() v1alpha1.DevSpaceInterface {
-	return newFakeDevSpaces(c)
+	return &FakeDevSpaces{c}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
