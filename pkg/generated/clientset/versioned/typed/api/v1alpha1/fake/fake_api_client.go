@@ -27,8 +27,8 @@ type FakeApiV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeApiV1alpha1) DevSpaces() v1alpha1.DevSpaceInterface {
-	return &FakeDevSpaces{c}
+func (c *FakeApiV1alpha1) DevSpaces(namespace string) v1alpha1.DevSpaceInterface {
+	return &FakeDevSpaces{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

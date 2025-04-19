@@ -32,7 +32,7 @@ import (
 // DevSpacesGetter has a method to return a DevSpaceInterface.
 // A group's client should implement this interface.
 type DevSpacesGetter interface {
-	DevSpaces() DevSpaceInterface
+	DevSpaces(namespace string) DevSpaceInterface
 }
 
 // DevSpaceInterface has methods to work with DevSpace resources.
@@ -59,13 +59,13 @@ type devSpaces struct {
 }
 
 // newDevSpaces returns a DevSpaces
-func newDevSpaces(c *ApiV1alpha1Client) *devSpaces {
+func newDevSpaces(c *ApiV1alpha1Client, namespace string) *devSpaces {
 	return &devSpaces{
 		gentype.NewClientWithListAndApply[*v1alpha1.DevSpace, *v1alpha1.DevSpaceList, *apiv1alpha1.DevSpaceApplyConfiguration](
 			"devspaces",
 			c.RESTClient(),
 			scheme.ParameterCodec,
-			"",
+			namespace,
 			func() *v1alpha1.DevSpace { return &v1alpha1.DevSpace{} },
 			func() *v1alpha1.DevSpaceList { return &v1alpha1.DevSpaceList{} }),
 	}

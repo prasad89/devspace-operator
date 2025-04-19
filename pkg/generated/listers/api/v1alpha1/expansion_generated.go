@@ -20,3 +20,7 @@ package v1alpha1
 // DevSpaceListerExpansion allows custom methods to be added to
 // DevSpaceLister.
 type DevSpaceListerExpansion interface{}
+
+// DevSpaceNamespaceListerExpansion allows custom methods to be added to
+// DevSpaceNamespaceLister.
+type DevSpaceNamespaceListerExpansion interface{}

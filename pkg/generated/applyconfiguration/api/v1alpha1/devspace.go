@@ -34,9 +34,10 @@ type DevSpaceApplyConfiguration struct {
 
 // DevSpace constructs a declarative configuration of the DevSpace type for use with
 // apply.
-func DevSpace(name string) *DevSpaceApplyConfiguration {
+func DevSpace(name, namespace string) *DevSpaceApplyConfiguration {
 	b := &DevSpaceApplyConfiguration{}
 	b.WithName(name)
+	b.WithNamespace(namespace)
 	b.WithKind("DevSpace")
 	b.WithAPIVersion("api/v1alpha1")
 	return b

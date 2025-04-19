@@ -41,32 +41,33 @@ type DevSpaceInformer interface {
 type devSpaceInformer struct {
 	factory          internalinterfaces.SharedInformerFactory
 	tweakListOptions internalinterfaces.TweakListOptionsFunc
+	namespace        string
 }
 
 // NewDevSpaceInformer constructs a new informer for DevSpace type.
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
-func NewDevSpaceInformer(client versioned.Interface, resyncPeriod time.Duration, indexers cache.Indexers) cache.SharedIndexInformer {
-	return NewFilteredDevSpaceInformer(client, resyncPeriod, indexers, nil)
+func NewDevSpaceInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers) cache.SharedIndexInformer {
+	return NewFilteredDevSpaceInformer(client, namespace, resyncPeriod, indexers, nil)
 }
 
 // NewFilteredDevSpaceInformer constructs a new informer for DevSpace type.
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
-func NewFilteredDevSpaceInformer(client versioned.Interface, resyncPeriod time.Duration, indexers cache.Indexers, tweakListOptions internalinterfaces.TweakListOptionsFunc) cache.SharedIndexInformer {
+func NewFilteredDevSpaceInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers, tweakListOptions internalinterfaces.TweakListOptionsFunc) cache.SharedIndexInformer {
 	return cache.NewSharedIndexInformer(
 		&cache.ListWatch{
 			ListFunc: func(options v1.ListOptions) (runtime.Object, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.ApiV1alpha1().DevSpaces().List(context.TODO(), options)
+				return client.ApiV1alpha1().DevSpaces(namespace).List(context.TODO(), options)
 			},
 			WatchFunc: func(options v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.ApiV1alpha1().DevSpaces().Watch(context.TODO(), options)
+				return client.ApiV1alpha1().DevSpaces(namespace).Watch(context.TODO(), options)
 			},
 		},
 		&apiv1alpha1.DevSpace{},
@@ -76,7 +77,7 @@ func NewFilteredDevSpaceInformer(client versioned.Interface, resyncPeriod time.D
 }
 
 func (f *devSpaceInformer) defaultInformer(client versioned.Interface, resyncPeriod time.Duration) cache.SharedIndexInformer {
-	return NewFilteredDevSpaceInformer(client, resyncPeriod, cache.Indexers{cache.NamespaceIndex: cache.MetaNamespaceIndexFunc}, f.tweakListOptions)
+	return NewFilteredDevSpaceInformer(client, f.namespace, resyncPeriod, cache.Indexers{cache.NamespaceIndex: cache.MetaNamespaceIndexFunc}, f.tweakListOptions)
 }
 
 func (f *devSpaceInformer) Informer() cache.SharedIndexInformer {

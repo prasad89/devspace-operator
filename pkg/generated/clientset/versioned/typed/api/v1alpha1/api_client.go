@@ -35,8 +35,8 @@ type ApiV1alpha1Client struct {
 	restClient rest.Interface
 }
 
-func (c *ApiV1alpha1Client) DevSpaces() DevSpaceInterface {
-	return newDevSpaces(c)
+func (c *ApiV1alpha1Client) DevSpaces(namespace string) DevSpaceInterface {
+	return newDevSpaces(c, namespace)
 }
 
 // NewForConfig creates a new ApiV1alpha1Client for the given config.

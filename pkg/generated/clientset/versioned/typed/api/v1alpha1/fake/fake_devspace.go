@@ -34,6 +34,7 @@ import (
 // FakeDevSpaces implements DevSpaceInterface
 type FakeDevSpaces struct {
 	Fake *FakeApiV1alpha1
+	ns   string
 }
 
 var devspacesResource = v1alpha1.SchemeGroupVersion.WithResource("devspaces")
@@ -44,7 +45,8 @@ var devspacesKind = v1alpha1.SchemeGroupVersion.WithKind("DevSpace")
 func (c *FakeDevSpaces) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DevSpace, err error) {
 	emptyResult := &v1alpha1.DevSpace{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootGetActionWithOptions(devspacesResource, name, options), emptyResult)
+		Invokes(testing.NewGetActionWithOptions(devspacesResource, c.ns, name, options), emptyResult)
+
 	if obj == nil {
 		return emptyResult, err
 	}
@@ -55,7 +57,8 @@ func (c *FakeDevSpaces) Get(ctx context.Context, name string, options v1.GetOpti
 func (c *FakeDevSpaces) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DevSpaceList, err error) {
 	emptyResult := &v1alpha1.DevSpaceList{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootListActionWithOptions(devspacesResource, devspacesKind, opts), emptyResult)
+		Invokes(testing.NewListActionWithOptions(devspacesResource, devspacesKind, c.ns, opts), emptyResult)
+
 	if obj == nil {
 		return emptyResult, err
 	}
@@ -76,14 +79,16 @@ func (c *FakeDevSpaces) List(ctx context.Context, opts v1.ListOptions) (result *
 // Watch returns a watch.Interface that watches the requested devSpaces.
 func (c *FakeDevSpaces) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
-		InvokesWatch(testing.NewRootWatchActionWithOptions(devspacesResource, opts))
+		InvokesWatch(testing.NewWatchActionWithOptions(devspacesResource, c.ns, opts))
+
 }
 
 // Create takes the representation of a devSpace and creates it.  Returns the server's representation of the devSpace, and an error, if there is any.
 func (c *FakeDevSpaces) Create(ctx context.Context, devSpace *v1alpha1.DevSpace, opts v1.CreateOptions) (result *v1alpha1.DevSpace, err error) {
 	emptyResult := &v1alpha1.DevSpace{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootCreateActionWithOptions(devspacesResource, devSpace, opts), emptyResult)
+		Invokes(testing.NewCreateActionWithOptions(devspacesResource, c.ns, devSpace, opts), emptyResult)
+
 	if obj == nil {
 		return emptyResult, err
 	}
@@ -94,7 +99,8 @@ func (c *FakeDevSpaces) Create(ctx context.Context, devSpace *v1alpha1.DevSpace,
 func (c *FakeDevSpaces) Update(ctx context.Context, devSpace *v1alpha1.DevSpace, opts v1.UpdateOptions) (result *v1alpha1.DevSpace, err error) {
 	emptyResult := &v1alpha1.DevSpace{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootUpdateActionWithOptions(devspacesResource, devSpace, opts), emptyResult)
+		Invokes(testing.NewUpdateActionWithOptions(devspacesResource, c.ns, devSpace, opts), emptyResult)
+
 	if obj == nil {
 		return emptyResult, err
 	}
@@ -106,7 +112,8 @@ func (c *FakeDevSpaces) Update(ctx context.Context, devSpace *v1alpha1.DevSpace,
 func (c *FakeDevSpaces) UpdateStatus(ctx context.Context, devSpace *v1alpha1.DevSpace, opts v1.UpdateOptions) (result *v1alpha1.DevSpace, err error) {
 	emptyResult := &v1alpha1.DevSpace{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootUpdateSubresourceActionWithOptions(devspacesResource, "status", devSpace, opts), emptyResult)
+		Invokes(testing.NewUpdateSubresourceActionWithOptions(devspacesResource, "status", c.ns, devSpace, opts), emptyResult)
+
 	if obj == nil {
 		return emptyResult, err
 	}
@@ -116,13 +123,14 @@ func (c *FakeDevSpaces) UpdateStatus(ctx context.Context, devSpace *v1alpha1.Dev
 // Delete takes name of the devSpace and deletes it. Returns an error if one occurs.
 func (c *FakeDevSpaces) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewRootDeleteActionWithOptions(devspacesResource, name, opts), &v1alpha1.DevSpace{})
+		Invokes(testing.NewDeleteActionWithOptions(devspacesResource, c.ns, name, opts), &v1alpha1.DevSpace{})
+
 	return err
 }
 
 // DeleteCollection deletes a collection of objects.
 func (c *FakeDevSpaces) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewRootDeleteCollectionActionWithOptions(devspacesResource, opts, listOpts)
+	action := testing.NewDeleteCollectionActionWithOptions(devspacesResource, c.ns, opts, listOpts)
 
 	_, err := c.Fake.Invokes(action, &v1alpha1.DevSpaceList{})
 	return err
@@ -132,7 +140,8 @@ func (c *FakeDevSpaces) DeleteCollection(ctx context.Context, opts v1.DeleteOpti
 func (c *FakeDevSpaces) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DevSpace, err error) {
 	emptyResult := &v1alpha1.DevSpace{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootPatchSubresourceActionWithOptions(devspacesResource, name, pt, data, opts, subresources...), emptyResult)
+		Invokes(testing.NewPatchSubresourceActionWithOptions(devspacesResource, c.ns, name, pt, data, opts, subresources...), emptyResult)
+
 	if obj == nil {
 		return emptyResult, err
 	}
@@ -154,7 +163,8 @@ func (c *FakeDevSpaces) Apply(ctx context.Context, devSpace *apiv1alpha1.DevSpac
 	}
 	emptyResult := &v1alpha1.DevSpace{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootPatchSubresourceActionWithOptions(devspacesResource, *name, types.ApplyPatchType, data, opts.ToPatchOptions()), emptyResult)
+		Invokes(testing.NewPatchSubresourceActionWithOptions(devspacesResource, c.ns, *name, types.ApplyPatchType, data, opts.ToPatchOptions()), emptyResult)
+
 	if obj == nil {
 		return emptyResult, err
 	}
@@ -177,7 +187,8 @@ func (c *FakeDevSpaces) ApplyStatus(ctx context.Context, devSpace *apiv1alpha1.D
 	}
 	emptyResult := &v1alpha1.DevSpace{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootPatchSubresourceActionWithOptions(devspacesResource, *name, types.ApplyPatchType, data, opts.ToPatchOptions(), "status"), emptyResult)
+		Invokes(testing.NewPatchSubresourceActionWithOptions(devspacesResource, c.ns, *name, types.ApplyPatchType, data, opts.ToPatchOptions(), "status"), emptyResult)
+
 	if obj == nil {
 		return emptyResult, err
 	}

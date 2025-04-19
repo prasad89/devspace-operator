@@ -40,5 +40,5 @@ func New(f internalinterfaces.SharedInformerFactory, namespace string, tweakList
 
 // DevSpaces returns a DevSpaceInformer.
 func (v *version) DevSpaces() DevSpaceInformer {
-	return &devSpaceInformer{factory: v.factory, tweakListOptions: v.tweakListOptions}
+	return &devSpaceInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }

@@ -30,9 +30,8 @@ type DevSpaceLister interface {
 	// List lists all DevSpaces in the indexer.
 	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1alpha1.DevSpace, err error)
-	// Get retrieves the DevSpace from the index for a given name.
-	// Objects returned here must be treated as read-only.
-	Get(name string) (*v1alpha1.DevSpace, error)
+	// DevSpaces returns an object that can list and get DevSpaces.
+	DevSpaces(namespace string) DevSpaceNamespaceLister
 	DevSpaceListerExpansion
 }
 
@@ -44,4 +43,27 @@ type devSpaceLister struct {
 // NewDevSpaceLister returns a new DevSpaceLister.
 func NewDevSpaceLister(indexer cache.Indexer) DevSpaceLister {
 	return &devSpaceLister{listers.New[*v1alpha1.DevSpace](indexer, v1alpha1.Resource("devspace"))}
+}
+
+// DevSpaces returns an object that can list and get DevSpaces.
+func (s *devSpaceLister) DevSpaces(namespace string) DevSpaceNamespaceLister {
+	return devSpaceNamespaceLister{listers.NewNamespaced[*v1alpha1.DevSpace](s.ResourceIndexer, namespace)}
+}
+
+// DevSpaceNamespaceLister helps list and get DevSpaces.
+// All objects returned here must be treated as read-only.
+type DevSpaceNamespaceLister interface {
+	// List lists all DevSpaces in the indexer for a given namespace.
+	// Objects returned here must be treated as read-only.
+	List(selector labels.Selector) (ret []*v1alpha1.DevSpace, err error)
+	// Get retrieves the DevSpace from the indexer for a given namespace and name.
+	// Objects returned here must be treated as read-only.
+	Get(name string) (*v1alpha1.DevSpace, error)
+	DevSpaceNamespaceListerExpansion
+}
+
+// devSpaceNamespaceLister implements the DevSpaceNamespaceLister
+// interface.
+type devSpaceNamespaceLister struct {
+	listers.ResourceIndexer[*v1alpha1.DevSpace]
 }
