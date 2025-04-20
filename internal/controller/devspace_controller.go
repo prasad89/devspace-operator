@@ -192,7 +192,7 @@ func generateDesiredSts(devspace *v1alpha1.DevSpace) *appsv1.StatefulSet {
 							VolumeMounts: []corev1.VolumeMount{
 								{
 									Name:      "homedir",
-									MountPath: fmt.Sprintf("/home/%s/%s", devspace.Spec.Owner, devspace.Name),
+									MountPath: fmt.Sprintf("/home/%s/%s", devspace.Namespace, devspace.Name),
 								},
 							},
 						},
@@ -324,7 +324,7 @@ func generateDesiredIngress(devspace *v1alpha1.DevSpace) *networkingv1.Ingress {
 		Spec: networkingv1.IngressSpec{
 			Rules: []networkingv1.IngressRule{
 				{
-					Host: devspace.Spec.Hostname,
+					Host: devspace.Name + ".platform.devspace.io",
 					IngressRuleValue: networkingv1.IngressRuleValue{
 						HTTP: &networkingv1.HTTPIngressRuleValue{
 							Paths: []networkingv1.HTTPIngressPath{

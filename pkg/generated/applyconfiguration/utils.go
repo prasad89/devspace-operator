@@ -33,8 +33,6 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 	// Group=api, Version=v1alpha1
 	case v1alpha1.SchemeGroupVersion.WithKind("DevSpace"):
 		return &apiv1alpha1.DevSpaceApplyConfiguration{}
-	case v1alpha1.SchemeGroupVersion.WithKind("DevSpaceSpec"):
-		return &apiv1alpha1.DevSpaceSpecApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("DevSpaceStatus"):
 		return &apiv1alpha1.DevSpaceStatusApplyConfiguration{}
 

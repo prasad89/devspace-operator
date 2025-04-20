@@ -18,6 +18,7 @@ limitations under the License.
 package v1alpha1
 
 import (
+	v1alpha1 "github.com/prasad89/devspace-operator/api/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	v1 "k8s.io/client-go/applyconfigurations/meta/v1"
@@ -28,7 +29,7 @@ import (
 type DevSpaceApplyConfiguration struct {
 	v1.TypeMetaApplyConfiguration    `json:",inline"`
 	*v1.ObjectMetaApplyConfiguration `json:"metadata,omitempty"`
-	Spec                             *DevSpaceSpecApplyConfiguration   `json:"spec,omitempty"`
+	Spec                             *v1alpha1.DevSpaceSpec            `json:"spec,omitempty"`
 	Status                           *DevSpaceStatusApplyConfiguration `json:"status,omitempty"`
 }
 
@@ -204,8 +205,8 @@ func (b *DevSpaceApplyConfiguration) ensureObjectMetaApplyConfigurationExists() 
 // WithSpec sets the Spec field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Spec field is set to the value of the last call.
-func (b *DevSpaceApplyConfiguration) WithSpec(value *DevSpaceSpecApplyConfiguration) *DevSpaceApplyConfiguration {
-	b.Spec = value
+func (b *DevSpaceApplyConfiguration) WithSpec(value v1alpha1.DevSpaceSpec) *DevSpaceApplyConfiguration {
+	b.Spec = &value
 	return b
 }
 

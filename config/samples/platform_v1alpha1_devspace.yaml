@@ -6,6 +6,3 @@ metadata:
     app.kubernetes.io/managed-by: kustomize
   name: devspace-sample
 spec:
-  name: devspace-sample
-  owner: prasad89
-  hostname: devspace-sample.devspace.io

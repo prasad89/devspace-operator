@@ -38,17 +38,6 @@ spec:
             type: object
           spec:
             description: DevSpaceSpec defines the desired state of DevSpace
-            properties:
-              hostname:
-                type: string
-              name:
-                type: string
-              owner:
-                type: string
-            required:
-            - hostname
-            - name
-            - owner
             type: object
           status:
             description: DevSpaceStatus defines the observed state of DevSpace

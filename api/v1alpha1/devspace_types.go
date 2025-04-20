@@ -30,10 +30,6 @@ import (
 type DevSpaceSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
-
-	Name     string `json:"name"`
-	Owner    string `json:"owner"`
-	Hostname string `json:"hostname"`
 }
 
 // DevSpaceStatus defines the observed state of DevSpace
